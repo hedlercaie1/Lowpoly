@@ -38,7 +38,7 @@
 
         .content {
             z-index: 2 !important;
-            pointer-events: none;
+            pointer-events: none; /* Deixa o clique passar pro fundo */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -48,7 +48,7 @@
         .content h1 {
             color: #fff !important;
             font-size: 5rem;
-            margin-bottom: 5px; /* Reduzi um pouco a margem para agrupar melhor */
+            margin-bottom: 5px; 
             letter-spacing: 2px;
             text-shadow: 
                 0 0 5px #fff,
@@ -58,13 +58,47 @@
 
         /* SUBTÍTULO ESTILIZADO (Where life is simpler) */
         .content p {
-            color: rgba(255, 255, 255, 0.85) !important; /* Branco levemente suave */
-            font-size: 1.1rem; /* Tamanho um pouco menor para dar destaque ao H1 */
-            font-family: 'Courier New', Courier, monospace; /* Fonte estilo terminal/retro */
-            text-transform: uppercase; /* Força letras maiúsculas */
-            letter-spacing: 8px; /* Espaçamento largo cinemático */
-            text-shadow: 0 0 8px rgba(255, 255, 255, 0.3) !important; /* Brilho bem sutil, só para não ficar chapado */
+            color: rgba(255, 255, 255, 0.85) !important; 
+            font-size: 1.1rem; 
+            font-family: 'Courier New', Courier, monospace; 
+            text-transform: uppercase; 
+            letter-spacing: 8px; 
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.3) !important; 
             margin-top: 10px;
+        }
+
+        /* CAIXA DO CONTRACT ADDRESS (CA) */
+        .ca-box {
+            margin-top: 40px;
+            padding: 12px 20px;
+            background: rgba(0, 0, 0, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.2s ease-in-out;
+            pointer-events: auto; /* Reativa o clique SÓ para essa caixa */
+        }
+
+        .ca-box:hover {
+            border-color: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .ca-label {
+            color: rgba(255, 255, 255, 0.5);
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9rem;
+            letter-spacing: 2px;
+        }
+
+        .ca-address {
+            color: #fff;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            text-shadow: 0 0 5px rgba(255,255,255,0.5);
         }
 
         /* Botão em inglês */
@@ -98,6 +132,11 @@
     <div class="content">
         <h1>$LOWPOLY</h1>
         <p>Where life is simpler</p>
+        
+        <div class="ca-box" onclick="copyCA()">
+            <span class="ca-label">CA:</span>
+            <span class="ca-address" id="caText">COLE_SEU_CA_AQUI</span>
+        </div>
     </div>
 
     <div class="unmute-hint" id="unmuteBtn">[ Click anywhere to unmute ]</div>
@@ -127,13 +166,35 @@
             });
         }
 
-        document.body.addEventListener('click', function() {
-            if(player && player.isMuted()) {
+        // Liga o som se clicar no fundo (na hint)
+        document.body.addEventListener('click', function(e) {
+            // Só libera o som se o clique NÃO for na caixa do CA
+            if (!e.target.closest('.ca-box') && player && player.isMuted()) {
                 player.unMute();
                 player.setVolume(100);
                 document.getElementById('unmuteBtn').style.display = 'none';
             }
         });
+
+        // Função para copiar o CA
+        function copyCA() {
+            const caElement = document.getElementById('caText');
+            const caString = caElement.innerText;
+            
+            // Impede copiar se já estiver mostrando a mensagem de copiado
+            if(caString === "COPIED!") return; 
+
+            navigator.clipboard.writeText(caString).then(() => {
+                caElement.innerText = "COPIED!";
+                caElement.style.color = "#0ff"; // Dá um brilhinho ciano quando copia
+                
+                // Volta ao normal depois de 2 segundos
+                setTimeout(() => {
+                    caElement.innerText = caString;
+                    caElement.style.color = "#fff";
+                }, 2000);
+            });
+        }
     </script>
 </body>
 </html>
