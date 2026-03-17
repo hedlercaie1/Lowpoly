@@ -39,24 +39,32 @@
         .content {
             z-index: 2 !important;
             pointer-events: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        /* BRILHO AJUSTADO: Agora está muito mais sutil e com mais contraste */
-        .content h1, .content p {
+        /* TÍTULO PRINCIPAL ($LOWPOLY) */
+        .content h1 {
             color: #fff !important;
+            font-size: 5rem;
+            margin-bottom: 5px; /* Reduzi um pouco a margem para agrupar melhor */
+            letter-spacing: 2px;
             text-shadow: 
                 0 0 5px #fff,
                 0 0 10px #fff,
-                0 0 15px rgba(255, 255, 255, 0.5) !important; /* Brilho neon sutil */
+                0 0 15px rgba(255, 255, 255, 0.5) !important; 
         }
 
-        .content h1 {
-            font-size: 5rem;
-            margin-bottom: 10px;
-        }
-
+        /* SUBTÍTULO ESTILIZADO (Where life is simpler) */
         .content p {
-            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.85) !important; /* Branco levemente suave */
+            font-size: 1.1rem; /* Tamanho um pouco menor para dar destaque ao H1 */
+            font-family: 'Courier New', Courier, monospace; /* Fonte estilo terminal/retro */
+            text-transform: uppercase; /* Força letras maiúsculas */
+            letter-spacing: 8px; /* Espaçamento largo cinemático */
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.3) !important; /* Brilho bem sutil, só para não ficar chapado */
+            margin-top: 10px;
         }
 
         /* Botão em inglês */
