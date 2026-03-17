@@ -1,0 +1,69 @@
+/* Configurações básicas para ocupar a tela cheia */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, html {
+    height: 100%;
+    width: 100%;
+    font-family: Arial, sans-serif; /* Você pode alterar a fonte aqui */
+    overflow: hidden; /* Evita barras de rolagem */
+    background-color: black; /* Fundo preto para caso o vídeo não carregue */
+}
+
+/* Container do vídeo de fundo */
+.video-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1; /* Coloca o vídeo atrás do conteúdo */
+}
+
+.back-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Faz o vídeo cobrir toda a tela sem distorcer */
+}
+
+/* Camada escura sobre o vídeo */
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4); /* Preto com 40% de opacidade (ajuste conforme necessário) */
+    z-index: 1; /* Coloca a camada sobre o vídeo mas atrás do texto */
+}
+
+/* Conteúdo centralizado */
+.content {
+    position: relative;
+    z-index: 2; /* Garante que o texto fique no topo */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: white; /* Texto branco */
+    text-align: center;
+}
+
+/* Estilo do título principal */
+.content h1 {
+    font-size: 5rem; /* Tamanho grande */
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    letter-spacing: 2px; /* Espaçamento entre as letras */
+}
+
+/* Estilo do parágrafo */
+.content p {
+    font-size: 1.5rem;
+    font-weight: 300;
+}
