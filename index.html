@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,17 +7,48 @@
     <link rel="stylesheet" href="style.css">
     
     <style>
-        /* CSS extra apenas para forçar o YouTube a ficar no fundo cobrindo a tela toda */
+        /* CORREÇÃO DO FUNDO PRETO: Garante que o fundo do body fique transparente para o vídeo aparecer */
+        body, html {
+            background-color: transparent !important; 
+        }
+
+        /* Camada 0: O Vídeo do YouTube */
         .yt-container {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -2; overflow: hidden; pointer-events: none;
+            z-index: 0; 
+            overflow: hidden; pointer-events: none;
         }
         #ytplayer {
             width: 100vw; height: 56.25vw;
             min-height: 100vh; min-width: 177.77vh;
             position: absolute; top: 50%; left: 50%;
             transform: translate(-50%, -50%);
+        }
+
+        /* Camada 1: A camada escura (Sobrescrevendo o z-index do style.css para garantir) */
+        .overlay {
+            z-index: 1 !important;
+        }
+
+        /* Camada 2: O Texto (Sobrescrevendo o z-index do style.css para garantir) */
+        .content {
+            z-index: 2 !important;
+            pointer-events: none; /* Deixa o clique passar pelo texto */
+        }
+
+        /* Dica visual discreta para ligar o som */
+        .unmute-hint {
+            position: absolute;
+            bottom: 30px;
+            width: 100%;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5); /* Branco meio transparente */
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            z-index: 3;
+            cursor: pointer;
+            letter-spacing: 1px;
         }
     </style>
 </head>
@@ -34,6 +65,8 @@
         <p>Where life is simpler</p>
     </div>
 
+    <div class="unmute-hint" id="unmuteBtn">[ Clique em qualquer lugar da tela para ativar o som ]</div>
+
     <script>
         var tag = document.createElement('script');
         tag.src = "https://www.youtube.com/iframe_api";
@@ -43,18 +76,30 @@
         var player;
         function onYouTubeIframeAPIReady() {
             player = new YT.Player('ytplayer', {
-                videoId: 'jsd2VSZVTF8', /* O ID do vídeo que você escolheu */
+                videoId: 'jsd2VSZVTF8', /* O ID do vídeo da Pizza Hotline */
                 playerVars: {
                     'autoplay': 1, 'controls': 0, 'disablekb': 1,
-                    'loop': 1, 'playlist': 'jsd2VSZVTF8', /* Repete o ID para o loop funcionar */
+                    'loop': 1, 'playlist': 'jsd2VSZVTF8',
                     'modestbranding': 1, 'playsinline': 1,
-                    'rel': 0, 'showinfo': 0, 'mute': 1 /* Inicia mudo para garantir o autoplay */
+                    'rel': 0, 'showinfo': 0, 
+                    'mute': 1 /* MUDO É OBRIGATÓRIO PARA O VÍDEO COMEÇAR SOZINHO */
                 },
                 events: {
-                    'onReady': function(event) { event.target.playVideo(); }
+                    'onReady': function(event) { 
+                        event.target.playVideo(); 
+                    }
                 }
             });
         }
+
+        // Magia acontecendo: Quando clicar na tela, liga a música!
+        document.body.addEventListener('click', function() {
+            if(player && player.isMuted()) {
+                player.unMute();        // Tira do mudo
+                player.setVolume(100);  // Coloca volume no máximo
+                document.getElementById('unmuteBtn').style.display = 'none'; // Esconde a frase de aviso
+            }
+        });
     </script>
 </body>
 </html>
