@@ -27,7 +27,7 @@
             transform: translate(-50%, -50%);
         }
 
-        /* Overlay com 50% de Opacidade e Grain */
+        /* Overlay com Opacidade e Grain (Manti o important aqui porque isso é crucial para a estrutura do fundo) */
         .overlay {
             z-index: 1 !important;
             background-color: rgba(0, 0, 0, 0.9) !important; 
@@ -36,35 +36,40 @@
             background-size: 200px 200px !important;
         }
 
-        .content {
-            z-index: 2 !important;
-            pointer-events: none; /* Deixa o clique passar pro fundo */
+        /* Usando o ID #main-content para aumentar a especificidade e evitar !important */
+        #main-content {
+            z-index: 2;
+            position: relative; /* Garante que fique acima da overlay */
+            pointer-events: none; 
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
+            height: 100vh; /* Ocupa a tela toda para centralizar de verdade */
         }
 
         /* TÍTULO PRINCIPAL ($LOWPOLY) */
-        .content h1 {
-            color: #fff !important;
+        #main-content h1 {
+            color: #fff;
             font-size: 5rem;
-            margin-bottom: 5px; 
+            margin: 0 0 5px 0; 
             letter-spacing: 2px;
+            /* Brilho neon aplicado diretamente, sem !important */
             text-shadow: 
                 0 0 5px #fff,
                 0 0 10px #fff,
-                0 0 15px rgba(255, 255, 255, 0.5) !important; 
+                0 0 15px rgba(255, 255, 255, 0.5); 
         }
 
         /* SUBTÍTULO ESTILIZADO (Where life is simpler) */
-        .content p {
-            color: rgba(255, 255, 255, 0.85) !important; 
+        #main-content p {
+            color: rgba(255, 255, 255, 0.85); 
             font-size: 1.1rem; 
             font-family: 'Courier New', Courier, monospace; 
             text-transform: uppercase; 
             letter-spacing: 8px; 
-            text-shadow: 0 0 8px rgba(255, 255, 255, 0.3) !important; 
-            margin-top: 10px;
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.3); 
+            margin: 10px 0 0 0;
         }
 
         /* CAIXA DO CONTRACT ADDRESS (CA) */
@@ -78,7 +83,7 @@
             align-items: center;
             gap: 10px;
             transition: all 0.2s ease-in-out;
-            pointer-events: auto; /* Reativa o clique SÓ para essa caixa */
+            pointer-events: auto; 
         }
 
         .ca-box:hover {
@@ -129,7 +134,7 @@
 
     <div class="overlay"></div>
 
-    <div class="content">
+    <div id="main-content" class="content">
         <h1>$LOWPOLY</h1>
         <p>Where life is simpler</p>
         
@@ -166,9 +171,7 @@
             });
         }
 
-        // Liga o som se clicar no fundo (na hint)
         document.body.addEventListener('click', function(e) {
-            // Só libera o som se o clique NÃO for na caixa do CA
             if (!e.target.closest('.ca-box') && player && player.isMuted()) {
                 player.unMute();
                 player.setVolume(100);
@@ -176,19 +179,16 @@
             }
         });
 
-        // Função para copiar o CA
         function copyCA() {
             const caElement = document.getElementById('caText');
             const caString = caElement.innerText;
             
-            // Impede copiar se já estiver mostrando a mensagem de copiado
             if(caString === "COPIED!") return; 
 
             navigator.clipboard.writeText(caString).then(() => {
                 caElement.innerText = "COPIED!";
-                caElement.style.color = "#0ff"; // Dá um brilhinho ciano quando copia
+                caElement.style.color = "#0ff"; 
                 
-                // Volta ao normal depois de 2 segundos
                 setTimeout(() => {
                     caElement.innerText = caString;
                     caElement.style.color = "#fff";
