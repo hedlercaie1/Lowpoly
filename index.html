@@ -6,10 +6,12 @@
     <title>Lowpoly Site</title>
     <link rel="stylesheet" href="style.css">
     
+    <link rel="preconnect" href="https://www.youtube.com">
+    
     <style>
-        /* CSS extra para o YouTube e as melhorias visuais */
+        /* Fundo preto para disfarçar o tempo de carregamento do YouTube */
         body, html {
-            background-color: transparent !important; 
+            background-color: #000 !important; 
         }
 
         .yt-container {
@@ -25,34 +27,31 @@
             transform: translate(-50%, -50%);
         }
 
-        /* Camada 1: O Overlay com 50% de Opacidade e Grain */
+        /* Overlay com 50% de Opacidade e Grain */
         .overlay {
             z-index: 1 !important;
-            /* PRETO COM 50% DE OPACIDADE */
-            background-color: rgba(0, 0, 0, 0.7) !important; 
-            /* Gera o efeito de estática/grain usando um SVG inline */
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.2'/%3E%3C/svg%3E") !important;
+            background-color: rgba(0, 0, 0, 0.5) !important; 
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.4'/%3E%3C/svg%3E") !important;
             background-repeat: repeat !important;
             background-size: 200px 200px !important;
         }
 
-        /* Camada 2: O Texto com Brilho (Glow) */
         .content {
             z-index: 2 !important;
             pointer-events: none;
         }
 
-        /* Aumentando o brilho dos textos centralizados */
+        /* Aumentando drasticamente o brilho (Glow) */
         .content h1, .content p {
-            color: #fff !important; /* Garante que seja branco */
-            /* Efeito de neon/glow branco */
+            color: #fff !important;
             text-shadow: 
-                0 0 5px #fff,
                 0 0 10px #fff,
-                0 0 20px #fff;
+                0 0 20px #fff,
+                0 0 40px #fff,
+                0 0 80px #fff,
+                0 0 120px #fff !important;
         }
 
-        /* Mantendo os tamanhos do seu style.css, mas garantindo que estejam aqui */
         .content h1 {
             font-size: 5rem;
             margin-bottom: 10px;
@@ -62,6 +61,7 @@
             font-size: 1.5rem;
         }
 
+        /* Botão em inglês */
         .unmute-hint {
             position: absolute;
             bottom: 30px;
@@ -73,6 +73,11 @@
             z-index: 3;
             cursor: pointer;
             letter-spacing: 1px;
+            transition: color 0.3s;
+        }
+        
+        .unmute-hint:hover {
+            color: rgba(255, 255, 255, 1);
         }
     </style>
 </head>
@@ -89,7 +94,7 @@
         <p>Where life is simpler</p>
     </div>
 
-    <div class="unmute-hint" id="unmuteBtn">[ Clique em qualquer lugar da tela para ativar o som ]</div>
+    <div class="unmute-hint" id="unmuteBtn">[ Click anywhere to unmute ]</div>
 
     <script>
         var tag = document.createElement('script');
