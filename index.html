@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lowpoly Site</title>
+    
+    <link rel="icon" type="image/png" href="favicon.png">
+    
     <link rel="stylesheet" href="style.css">
     
     <link rel="preconnect" href="https://www.youtube.com">
@@ -12,6 +15,9 @@
         /* Fundo preto para disfarçar o tempo de carregamento do YouTube */
         body, html {
             background-color: #000 !important; 
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
         }
 
         .yt-container {
@@ -29,8 +35,10 @@
 
         /* Overlay com Opacidade e Grain (Manti o important aqui porque isso é crucial para a estrutura do fundo) */
         .overlay {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
             z-index: 1 !important;
-            background-color: rgba(0, 0, 0, 0.6) !important; 
+            background-color: rgba(0, 0, 0, 0.9) !important; 
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.15'/%3E%3C/svg%3E") !important;
             background-repeat: repeat !important;
             background-size: 200px 200px !important;
@@ -46,6 +54,8 @@
             align-items: center;
             justify-content: center;
             height: 100vh; /* Ocupa a tela toda para centralizar de verdade */
+            width: 100%;
+            text-align: center;
         }
 
         /* TÍTULO PRINCIPAL ($LOWPOLY) */
@@ -54,6 +64,7 @@
             font-size: 5rem;
             margin: 0 0 5px 0; 
             letter-spacing: 2px;
+            font-family: sans-serif;
             /* Brilho neon aplicado diretamente, sem !important */
             text-shadow: 
                 0 0 5px #fff,
@@ -134,7 +145,7 @@
 
     <div class="overlay"></div>
 
-    <div id="main-content" class="content">
+    <div id="main-content">
         <h1>$LOWPOLY</h1>
         <p>Where life is simpler</p>
         
@@ -183,15 +194,16 @@
             const caElement = document.getElementById('caText');
             const caString = caElement.innerText;
             
-            if(caString === "COPIED!") return; 
+            if(caString === "Soon" || caString === "COPIED!") return; 
 
             navigator.clipboard.writeText(caString).then(() => {
+                const oldColor = caElement.style.color;
                 caElement.innerText = "COPIED!";
                 caElement.style.color = "#0ff"; 
                 
                 setTimeout(() => {
                     caElement.innerText = caString;
-                    caElement.style.color = "#fff";
+                    caElement.style.color = oldColor || "#fff";
                 }, 2000);
             });
         }
